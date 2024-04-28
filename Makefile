@@ -39,6 +39,26 @@ define Package/$(PKG_NAME)/description
   TC egress and ingress hooks.
 endef
 
+define Package/$(PKG_NAME)/config
+	menu "Features configuration"
+		depends on PACKAGE_einat-ebpf
+
+		config EINAT_EBPF_IPV6
+			bool "Enable IPV6 NAT66 feature"
+			default n
+			help
+			  It would increase load time of eBPF programs to
+			  about 4 times.
+	endmenu
+endef
+
+PKG_CONFIG_DEPENDS:= \
+	CONFIG_EINAT_EBPF_IPV6
+
+RUST_PKG_FEATURES:=$(subst $(space),$(comma),$(strip \
+	$(if $(CONFIG_EINAT_EBPF_IPV6),ipv6) \
+))
+
 define Package/$(PKG_NAME)/conffiles
 /etc/config/einat
 endef
