@@ -28,7 +28,7 @@ define Package/$(PKG_NAME)
   URL:=https://github.com/EHfive/einat-ebpf
   # You need enable KERNEL_DEBUG_INFO_BTF and disable KERNEL_DEBUG_INFO_REDUCED
   DEPENDS:=$(RUST_ARCH_DEPENDS) $(BPF_DEPENDS) +libelf +zlib +kmod-sched-bpf \
-    @(aarch64||x86_64) @KERNEL_DEBUG_FS @KERNEL_DEBUG_INFO_BTF
+    @KERNEL_DEBUG_FS @KERNEL_DEBUG_INFO_BTF
   USERID:=einat:einat
   PROVIDES:=einat
 endef
