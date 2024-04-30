@@ -34,9 +34,9 @@ And LuCI can be found here [luci-app-einat][]
 # Please refer to [Build system setup](https://openwrt.org/docs/guide-developer/toolchain/install-buildsystem)
 sudo apt install libelf-dev zlib1g-dev
 # Take the x86_64 platform as an example
-tar xjf openwrt-sdk-23.05.3-x86-64_gcc-12.3.0_musl.Linux-x86_64.tar.xz
+tar xjf rebuild-sdk-23.05.3-x86-64_gcc-12.3.0_musl.Linux-x86_64.tar.xz
 # Go to the SDK root dir
-cd openwrt-sdk-*-x86_64_*
+cd rebuild-sdk-*-x86_64_*
 # Install prebuilt llvm-bpf
 tar xjf llvm-bpf-*.Linux-x86_64.tar.xz
 # First run to generate a .config file
