@@ -20,7 +20,7 @@ CONFIG_KERNEL_DEBUG_INFO=y
 CONFIG_KERNEL_DEBUG_INFO_REDUCED=n
 CONFIG_KERNEL_DEBUG_INFO_BTF=y
 ```
-- Currently [immortalwrt][] and [fantastic-rebuild][] are known to enable these options
+- Currently are known [immortalwrt][] and [fantastic-rebuild][] is enabled these options
 
 
 ## Releases
