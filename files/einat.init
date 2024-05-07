@@ -1,1 +1,91 @@
 #!/bin/sh /etc/rc.common
+
+. "${IPKG_INSTROOT}/lib/functions/network.sh"
+
+START=60
+STOP=60
+USE_PROCD=1
+
+# einat
+CONF=einat
+CONFIGSECTION=config
+PROG=/usr/bin/einat
+
+config_load "$CONF"
+
+network_find_wan DEF_WAN true
+network_find_wan6 DEF_WAN6 true
+
+
+
+load_interfaces() {
+	local n ifname hairpin_enabled hairpinif
+
+	config_get ifname "$1" ifname
+	config_get hairpinif "$1" hairpinif
+
+	[ "$hairpin_enabled" = 1 ] && ifname="$ifname $hairpinif"
+
+	for n in $ifname; do
+		interfaces=" $(uci -q show network|grep "device='$n'"|cut -f2 -d'.') $interfaces"
+	done
+}
+
+validate_section_config() {
+	uci_load_validate "$CONF" "$CONFIGSECTION" "$1" "$2" \
+		'enabled:bool:0' \
+		'bpf_log_level:range(0, 5):0' \
+		'nat44:bool:1' \
+		'nat66:bool:0' \
+		'ifname:network' \
+		'ports:portrange:20000-29999' \
+		'hairpin_enabled:bool:0' \
+		'hairpinif:list(network)'
+}
+
+launcher() {
+	[ "$2" = 0 ] || { >&2 echo "$(basename $0): section $1 validation failed"; return 1; }
+	[ "$enabled" = 0 ] && return 0
+
+	local error=0
+	local wanifname
+
+	# ifname
+	case "$nat66$nat44" in
+		00) network_get_device wanifname "$DEF_WAN";;
+		01) network_get_device wanifname "$DEF_WAN";;
+		10) network_get_device wanifname "$DEF_WAN6";;
+		11) network_get_device wanifname "$DEF_WAN6";;
+	esac
+	[ -z "${ifname:=$wanifname}" ] && >&2 echo "$(basename $0): section $1 option ifname parsing failed, there may be no network connection" && let error++
+
+	[ "$error" -gt 0 ] && return 1
+
+	einat_instance "$1"
+}
+
+service_triggers() {
+	procd_add_reload_trigger "$CONF" 'network'
+
+	local interfaces
+
+	load_interfaces $CONFIGSECTION
+	[ -n "$interfaces" ] && {
+		procd_add_reload_interface_trigger $interfaces
+	} || {
+		for n in $DEF_WAN $DEF_WAN6; do
+			procd_add_reload_interface_trigger $n
+		done
+	}
+
+	procd_add_validation validate_section_config
+}
+
+start_service() {
+	validate_section_config "$CONFIGSECTION" launcher
+}
+
+reload_service() {
+	stop
+	start
+}
