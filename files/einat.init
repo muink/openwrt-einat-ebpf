@@ -52,7 +52,7 @@ einat_instance() {
 		--ports "$ports"
 
 	[ "$nat44" = 1 ] && procd_append_param command --nat44
-	[ "$nat66" = 1 ] && procd_append_param command --nat66
+	#[ "$nat66" = 1 ] && procd_append_param command --nat66
 		
 	procd_append_param netdev "$ifname"
 
