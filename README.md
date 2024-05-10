@@ -12,7 +12,7 @@ CONFIG_DEBUG_INFO=y
 CONFIG_DEBUG_INFO_REDUCED=n
 CONFIG_DEBUG_INFO_BTF=y
 ```
-- You can install kmod-ikconfig, use command `zcat /proc/config.gz | grep -E "(CONFIG_DEBUG_KERNEL|CONFIG_DEBUG_INFO|CONFIG_DEBUG_INFO_REDUCED|CONFIG_DEBUG_INFO_BTF)"` to confirm
+- You can install `kmod-ikconfig`, use command `zcat /proc/config.gz | grep -E "(CONFIG_DEBUG_KERNEL|CONFIG_DEBUG_INFO|CONFIG_DEBUG_INFO_REDUCED|CONFIG_DEBUG_INFO_BTF)"` to confirm
 - If it does not match, you need add the following configuration to the `.config` and rebuild the target kernel
 ```
 CONFIG_KERNEL_DEBUG_KERNEL=y
