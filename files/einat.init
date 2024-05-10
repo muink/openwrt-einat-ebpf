@@ -82,6 +82,16 @@ einat_instance() {
 		json_add_string src "$(fw4 -q device $ifname)"
 		json_add_string dest_port "$ports"
 		json_close_object
+		# IPv4 accept forward wan -> lan
+		json_add_object ''
+		json_add_string type rule
+		json_add_string target 'ACCEPT'
+		json_add_string name "Forward wan 2 lan"
+		json_add_string family 'ipv4'
+		json_add_string proto 'tcp udp icmp'
+		json_add_string src "$(fw4 -q device $ifname)"
+		json_add_string dest "$(fw4 -q device br-lan)"
+		json_close_object
 	json_close_array
 	procd_close_data
 
