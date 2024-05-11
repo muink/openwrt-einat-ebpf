@@ -57,7 +57,7 @@ einat_instance() {
 	procd_append_param netdev "$ifname"
 
 	if [ "$hairpin_enabled" = 1 -a -n "$hairpinif" ]; then
-		procd_append_param command --hairpin-if "$hairpinif"
+		procd_append_param command --hairpin-if lo $hairpinif
 		for n in $hairpinif; do
 			procd_append_param netdev "$n"
 		done
