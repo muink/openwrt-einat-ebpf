@@ -17,6 +17,7 @@ PKG_BUILD_PARALLEL:=1
 PKG_BUILD_FLAGS:=no-mips16
 
 include $(INCLUDE_DIR)/package.mk
+include $(INCLUDE_DIR)/nls.mk
 include $(INCLUDE_DIR)/bpf.mk
 include $(TOPDIR)/feeds/packages/lang/rust/rust-package.mk
 
@@ -39,6 +40,9 @@ define Package/$(PKG_NAME)/description
   TC egress and ingress hooks.
 endef
 
+#RUSTC_LDFLAGS+= -C link-args=$(INTL_LDFLAGS)
+RUSTC_LDFLAGS+= -C link-args=-Wl,--unresolved-symbols=ignore-in-shared-libs
+
 define Package/$(PKG_NAME)/config
 	menu "Features configuration"
 		depends on PACKAGE_einat-ebpf
@@ -52,7 +56,7 @@ define Package/$(PKG_NAME)/config
 	endmenu
 endef
 
-PKG_CONFIG_DEPENDS:= \
+PKG_CONFIG_DEPENDS+= \
 	CONFIG_EINAT_EBPF_IPV6
 
 RUST_PKG_FEATURES:=$(subst $(space),$(comma),$(strip \
