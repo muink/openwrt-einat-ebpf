@@ -28,8 +28,7 @@ define Package/$(PKG_NAME)
   TITLE:=eBPF-based Endpoint-Independent NAT
   URL:=https://github.com/EHfive/einat-ebpf
   # You need enable KERNEL_DEBUG_INFO_BTF and disable KERNEL_DEBUG_INFO_REDUCED
-  DEPENDS:=$(RUST_ARCH_DEPENDS) $(INTL_DEPENDS) $(BPF_DEPENDS) \
-    +libelf +zlib +kmod-sched-core +kmod-sched-bpf \
+  DEPENDS:=$(RUST_ARCH_DEPENDS) $(BPF_DEPENDS) +libelf +zlib +kmod-sched-core +kmod-sched-bpf \
     +@KERNEL_DEBUG_FS +@KERNEL_DEBUG_INFO_BTF
   USERID:=einat:einat
   PROVIDES:=einat
@@ -41,8 +40,7 @@ define Package/$(PKG_NAME)/description
   TC egress and ingress hooks.
 endef
 
-#RUSTC_LDFLAGS+= -C link-args=$(INTL_LDFLAGS)
-#RUSTC_LDFLAGS+= -C link-args=-Wl,--unresolved-symbols=ignore-in-shared-libs
+RUSTC_LDFLAGS+= $(foreach arg,$(INTL_LDFLAGS),-C link-arg=$(arg))
 
 define Package/$(PKG_NAME)/config
 	menu "Features configuration"
