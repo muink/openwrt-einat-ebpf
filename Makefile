@@ -52,7 +52,7 @@ define Package/$(PKG_NAME)/config
 	endmenu
 endef
 
-PKG_CONFIG_DEPENDS:= \
+PKG_CONFIG_DEPENDS+= \
 	CONFIG_EINAT_EBPF_IPV6
 
 RUST_PKG_FEATURES:=$(subst $(space),$(comma),$(strip \
