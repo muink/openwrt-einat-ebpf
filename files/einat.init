@@ -72,7 +72,7 @@ einat_instance() {
 	procd_open_data
 	# configure firewall
 	json_add_array firewall
-		# IPv4 input (This is not required if the upper-level gateway is Full Cone NAT)
+		# IPv4 input (Optional. Relax the localhost firewall)
 		json_add_object ''
 		json_add_string type rule
 		json_add_string target 'ACCEPT'
