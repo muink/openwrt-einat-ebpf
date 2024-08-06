@@ -121,7 +121,8 @@ launcher() {
 		10) network_get_device wanifname "$DEF_WAN6";;
 		11) network_get_device wanifname "$DEF_WAN6";;
 	esac
-	[ -z "${ifname:=$wanifname}" ] && >&2 echo "$(basename $0): section $1 option ifname parsing failed, there may be no network connection" && let error++
+	local ifname="${ifname:-$wanifname}"
+	[ -z "$ifname" ] && >&2 echo "$(basename $0): section $1 option ifname parsing failed, there may be no network connection" && let error++
 
 	# review
 	[ -n "$EINAT_DEBUG" ] && {
