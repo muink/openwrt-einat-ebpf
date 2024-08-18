@@ -52,7 +52,7 @@ popd
 # Select the package Network -> Routing and Redirection -> einat-ebpf
 make menuconfig
 # Start compiling
-make package/einat-ebpf/compile V=s -j$(nproc)
+make package/einat-ebpf/compile V=s BUILD_LOG=y -j$(nproc)
 ```
 
 [einat-ebpf]: https://github.com/EHfive/einat-ebpf
