@@ -16,6 +16,9 @@ PKG_BUILD_DEPENDS:=rust/host
 PKG_BUILD_PARALLEL:=1
 PKG_BUILD_FLAGS:=no-mips16
 
+PKG_CONFIG_DEPENDS+= \
+	CONFIG_EINAT_EBPF_IPV6
+
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/bpf.mk
 include $(TOPDIR)/feeds/packages/lang/rust/rust-package.mk
@@ -51,9 +54,6 @@ define Package/$(PKG_NAME)/config
 			  about 4 times.
 	endmenu
 endef
-
-PKG_CONFIG_DEPENDS+= \
-	CONFIG_EINAT_EBPF_IPV6
 
 RUST_PKG_FEATURES:=$(subst $(space),$(comma),$(strip \
 	$(if $(CONFIG_EINAT_EBPF_IPV6),ipv6) \
