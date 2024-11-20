@@ -1,17 +1,17 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=einat-ebpf
-PKG_VERSION:=0.1.2
-PKG_RELEASE:=cb95014-1
+PKG_VERSION:=0.1.3
+PKG_RELEASE:=0e4fe71-1
 
 #PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 #PKG_SOURCE_URL:=https://codeload.github.com/EHfive/einat-ebpf/tar.gz/refs/tags/v$(PKG_VERSION)?
-#PKG_HASH:=17bb289475687cb6970415afc35c374ea80cd01e59964f2f9a611f6fe88f4270
+#PKG_HASH:=d1d1e0c19334daf42e0cd8e26151d889a18a8981a6dbda32626af6dfce80519a
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://github.com/EHfive/einat-ebpf.git
-PKG_SOURCE_VERSION:=cb95014f591ad0fd87f113da39d47011bb974ad8
-PKG_MIRROR_HASH:=31e440032f458e7095668ff959954de71144cdf23be70fdb639bc71d8e26abbe
+PKG_SOURCE_VERSION:=0e4fe711e7be1228066902e2a4c438e8e1b52192
+PKG_MIRROR_HASH:=05ccebb3fb2dde30c7fc35953ee86efa6796745bda18cbc85534c2a268992443
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.gz
 
@@ -41,7 +41,7 @@ define Package/$(PKG_NAME)
   URL:=https://github.com/EHfive/einat-ebpf
   # You need enable KERNEL_DEBUG_INFO_BTF and disable KERNEL_DEBUG_INFO_REDUCED
   DEPENDS:=$(RUST_ARCH_DEPENDS) $(BPF_DEPENDS) \
-	+kmod-sched-core +kmod-sched-bpf \
+    +kmod-sched-core +kmod-sched-bpf \
     +EINAT_EBPF_BACKEND_LIBBPF:libbpf \
     +@KERNEL_DEBUG_FS +@KERNEL_DEBUG_INFO_BTF
   USERID:=einat:einat
