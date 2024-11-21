@@ -1,19 +1,21 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=einat-ebpf
-PKG_VERSION:=0.1.3
-PKG_RELEASE:=0e4fe71-1
+PKG_VERSION:=0.1.4
+PKG_RELEASE:=1
 
-#PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-#PKG_SOURCE_URL:=https://codeload.github.com/EHfive/einat-ebpf/tar.gz/refs/tags/v$(PKG_VERSION)?
-#PKG_HASH:=d1d1e0c19334daf42e0cd8e26151d889a18a8981a6dbda32626af6dfce80519a
-
+ifneq ($(shell echo $(PKG_RELEASE) | grep -E '^[0-9]+$$'),)
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
+PKG_SOURCE_URL:=https://codeload.github.com/EHfive/einat-ebpf/tar.gz/refs/tags/v$(PKG_VERSION)?
+PKG_HASH:=7e95e8f232869c124772bf3b6f2ecc5763a68406378ea4729631f57716d7e5ac
+else
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://github.com/EHfive/einat-ebpf.git
 PKG_SOURCE_VERSION:=0e4fe711e7be1228066902e2a4c438e8e1b52192
 PKG_MIRROR_HASH:=05ccebb3fb2dde30c7fc35953ee86efa6796745bda18cbc85534c2a268992443
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.gz
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_SOURCE_VERSION).tar.gz
+endif
 
 PKG_MAINTAINER:=Anya Lin <hukk1996@gmail.com>
 PKG_LICENSE:=GPL-2.0-or-later GPL-2.0-only
