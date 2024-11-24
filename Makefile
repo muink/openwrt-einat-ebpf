@@ -35,6 +35,10 @@ include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/bpf.mk
 include $(TOPDIR)/feeds/packages/lang/rust/rust-package.mk
 
+# $(TOPDIR)/feeds/packages/lang/rust/rust-values.mk
+# RUST_ARCH_DEPENDS:=@(aarch64||arm||i386||i686||mips||mipsel||mips64||mips64el||mipsel||powerpc64||riscv64||x86_64)
+EINAT_EBPF_RUST_ARCH_DEPENDS:=@(aarch64||arm||i386||i686||powerpc64||riscv64||x86_64) # Architectures other than x86_64 and aarch64 have not been tested.
+
 define Package/$(PKG_NAME)
   SECTION:=net
   CATEGORY:=Network
@@ -42,7 +46,7 @@ define Package/$(PKG_NAME)
   TITLE:=eBPF-based Endpoint-Independent NAT
   URL:=https://github.com/EHfive/einat-ebpf
   # You need enable KERNEL_DEBUG_INFO_BTF and disable KERNEL_DEBUG_INFO_REDUCED
-  DEPENDS:=$(RUST_ARCH_DEPENDS) $(BPF_DEPENDS) \
+  DEPENDS:=$(EINAT_EBPF_RUST_ARCH_DEPENDS) $(BPF_DEPENDS) \
     +kmod-sched-core +kmod-sched-bpf \
     +EINAT_EBPF_BACKEND_LIBBPF:libbpf \
     +@KERNEL_DEBUG_FS +@KERNEL_DEBUG_INFO_BTF
