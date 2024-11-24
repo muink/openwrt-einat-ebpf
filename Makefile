@@ -21,7 +21,7 @@ PKG_MAINTAINER:=Anya Lin <hukk1996@gmail.com>
 PKG_LICENSE:=GPL-2.0-or-later GPL-2.0-only
 PKG_LICENSE_FILES:=LICENSE
 
-PKG_BUILD_DEPENDS:=rust/host libbpf #HAS_BPF_TOOLCHAIN:bpf-headers
+PKG_BUILD_DEPENDS:=rust/host libbpf #HAS_BPF_TOOLCHAIN:bpf-headers # requires modified kernel
 PKG_BUILD_PARALLEL:=1
 PKG_BUILD_FLAGS:=no-mips16
 
