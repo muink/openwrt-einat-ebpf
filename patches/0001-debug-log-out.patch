@@ -1,0 +1,39 @@
+From e105162f392413102f357f8e07a827ad1a966a51 Mon Sep 17 00:00:00 2001
+From: Anya Lin <hukk1996@gmail.com>
+Date: Sun, 24 Nov 2024 10:17:54 +0000
+Subject: [PATCH] debug: log out
+
+---
+ build.rs | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/build.rs b/build.rs
+index 33bdf2e..1612416 100644
+--- a/build.rs
++++ b/build.rs
+@@ -73,6 +73,13 @@ fn einat_obj_build() {
+         "bpfeb"
+     };
+ 
++    //let res = Command::new("bash")
++    //    .arg("-c")
++    //    .arg("echo PATH: $PATH")
++    //    .status()
++    //    .unwrap();
++    //panic!("{}", res);
++
+     let res = cmd
+         .arg("-target")
+         .arg(target)
+@@ -84,9 +91,7 @@ fn einat_obj_build() {
+         .arg(bpf_obj_tmp)
+         .status()
+         .expect("compile BPF object failed");
+-    if !res.success() {
+-        panic!("{}", res);
+-    }
++    panic!("\n\nBPF 编译失败！\n执行的命令为: {:?}\n错误代码: {}\n", cmd, res);
+ 
+     fn strip_obj<S: AsRef<OsStr>>(strip_cmd: &str, target: S, source: S) -> Result<(), String> {
+         let mut args = strip_cmd.split_ascii_whitespace();
+-- 
