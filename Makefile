@@ -41,9 +41,21 @@ PKG_CONFIG_DEPENDS+= \
 	CONFIG_EINAT_EBPF_BINDGEN \
 	CONFIG_EINAT_EBPF_STATIC \
 
+RUST_PKG_FEATURES:=$(subst $(space),$(comma),$(strip \
+	$(if $(CONFIG_EINAT_EBPF_IPV6),ipv6) \
+	$(if $(CONFIG_EINAT_EBPF_BACKEND_LIBBPF),libbpf) \
+	$(if $(CONFIG_EINAT_EBPF_BINDGEN),bindgen) \
+	$(if $(CONFIG_EINAT_EBPF_STATIC),static) \
+))
+
+#export EINAT_BPF_CFLAGS="-I/usr/include/aarch64-linux-gnu"
+
 include $(INCLUDE_DIR)/bpf.mk
 include $(INCLUDE_DIR)/package.mk
 include $(TOPDIR)/feeds/packages/lang/rust/rust-package.mk
+
+# Don't ignore Cargo.lock
+Build/Compile:=$(call Build/Compile/Cargo,,--locked)
 
 # The LLVM_PATH var is required so that einat's build script finds llvm-strip
 TARGET_PATH_PKG:=$(LLVM_PATH):$(TARGET_PATH_PKG)
@@ -110,15 +122,6 @@ define Package/$(PKG_NAME)/config
 			default n
 	endmenu
 endef
-
-RUST_PKG_FEATURES:=$(subst $(space),$(comma),$(strip \
-	$(if $(CONFIG_EINAT_EBPF_IPV6),ipv6) \
-	$(if $(CONFIG_EINAT_EBPF_BACKEND_LIBBPF),libbpf) \
-	$(if $(CONFIG_EINAT_EBPF_BINDGEN),bindgen) \
-	$(if $(CONFIG_EINAT_EBPF_STATIC),static) \
-))
-
-#export EINAT_BPF_CFLAGS="-I/usr/include/aarch64-linux-gnu"
 
 define Package/$(PKG_NAME)/conffiles
 /etc/config/einat
