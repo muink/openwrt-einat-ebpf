@@ -21,7 +21,7 @@ PKG_SOURCE_URL:=https://github.com/EHfive/einat-ebpf.git
 PKG_SOURCE_VERSION:=$(PKG_UPSTREAM_GITHASH)
 PKG_MIRROR_HASH:=05ccebb3fb2dde30c7fc35953ee86efa6796745bda18cbc85534c2a268992443
 
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_SOURCE_VERSION).tar.gz
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_UPSTREAM_VERSION)-$(PKG_SOURCE_VERSION).tar.gz
 endif
 
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_UPSTREAM_VERSION)
@@ -60,10 +60,11 @@ Build/Compile:=$(call Build/Compile/Cargo,,--locked)
 # The LLVM_PATH var is required so that einat's build script finds llvm-strip
 TARGET_PATH_PKG:=$(LLVM_PATH):$(TARGET_PATH_PKG)
 
+# Platform-specific features
 # $(TOPDIR)/feeds/packages/lang/rust/rust-values.mk
 # RUST_ARCH_DEPENDS:=@(aarch64||arm||i386||i686||mips||mipsel||mips64||mips64el||mipsel||powerpc64||riscv64||x86_64)
 EINAT_EBPF_RUST_ARCH_DEPENDS:=@(aarch64||arm||i386||i686||powerpc64||riscv64||x86_64) # Architectures other than x86_64 and aarch64 have not been tested.
-
+#
 ifeq ($(ARCH),arm)
   CONFIG_EINAT_EBPF_BINDGEN:=y
 else ifeq ($(ARCH),i386)
