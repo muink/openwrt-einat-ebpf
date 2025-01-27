@@ -106,7 +106,7 @@ define Package/$(PKG_NAME)/config
 
 		config EINAT_EBPF_BINDGEN
 			bool "Enable bindgen"
-			default y if (arm || i386 || i686)
+			default y if !ARCH_64BIT
 			default n
 			help
 			  Bindgen for libbpf headers, required on 32-bit
