@@ -48,11 +48,12 @@ RUST_PKG_FEATURES:=$(subst $(space),$(comma),$(strip \
 	$(if $(CONFIG_EINAT_EBPF_STATIC),static) \
 ))
 
-#export EINAT_BPF_CFLAGS="-I/usr/include/aarch64-linux-gnu"
-
 include $(INCLUDE_DIR)/bpf.mk
 include $(INCLUDE_DIR)/package.mk
 include $(TOPDIR)/feeds/packages/lang/rust/rust-package.mk
+
+CARGO_PKG_VARS+= \
+	BINDGEN_EXTRA_CLANG_ARGS=-I$(shell $(TARGET_CC_NOCACHE) -print-file-name=include)
 
 # Don't ignore Cargo.lock
 ifeq ($(shell grep -o 'RUST_PKG_LOCKED' $(TOPDIR)/feeds/packages/lang/rust/rust-package.mk 2>/dev/null),)
