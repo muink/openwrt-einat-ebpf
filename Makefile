@@ -53,7 +53,7 @@ include $(INCLUDE_DIR)/package.mk
 include $(TOPDIR)/feeds/packages/lang/rust/rust-package.mk
 
 CARGO_PKG_VARS+= \
-	BINDGEN_EXTRA_CLANG_ARGS=-I$(shell $(TARGET_CC_NOCACHE) -print-file-name=include)
+	BINDGEN_EXTRA_CLANG_ARGS="--target=$(REAL_GNU_TARGET_NAME) --sysroot=$(TOOLCHAIN_DIR) -I$(shell $(TARGET_CC_NOCACHE) -print-file-name=include)"
 
 # Don't ignore Cargo.lock
 ifeq ($(shell grep -o 'RUST_PKG_LOCKED' $(TOPDIR)/feeds/packages/lang/rust/rust-package.mk 2>/dev/null),)
@@ -62,6 +62,19 @@ endif
 
 # The LLVM_PATH var is required so that einat's build script finds llvm-strip
 TARGET_PATH_PKG:=$(LLVM_PATH):$(TARGET_PATH_PKG)
+
+# Workaround: bindgen 0.71.1 generates Default derive for opaque structs with
+# large array padding ([u8;80]/[u8;56]) which fails to compile (E0277).
+# Fix: cargo fetch downloads libbpf-sys first, then fix-libbpf-sys.sh patches
+# build.rs and invalidates the cargo fingerprint so bindings.rs is regenerated.
+define Build/Compile
+	+$(CARGO_PKG_VARS) \
+		cargo fetch \
+		--manifest-path "$(PKG_BUILD_DIR)/Cargo.toml" \
+		--locked
+	$(CURDIR)/fix-libbpf-sys.sh "$(CARGO_HOME)" "$(PKG_BUILD_DIR)"
+	$(call Build/Compile/Cargo)
+endef
 
 # Platform-specific features
 # $(TOPDIR)/feeds/packages/lang/rust/rust-values.mk
